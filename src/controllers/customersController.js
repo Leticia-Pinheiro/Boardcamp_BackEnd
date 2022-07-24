@@ -88,5 +88,5 @@ export async function updateCustomers(req, res){
 
 
   await connection.query(`UPDATE customers SET name = '${customer.name}', phone='${customer.phone}', cpf='${customer.cpf}', birthday='${customer.birthday}' WHERE id = ${id}`)
-  res.status(201).send('Cliente atualizado com sucesso')
+  res.status(200).send('Cliente atualizado com sucesso')
 }
