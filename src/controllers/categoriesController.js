@@ -2,9 +2,17 @@ import joi from 'joi'
 import connection from "../database/postgres.js"
 
 export async function getCategories(req, res){     
+  try{     
 
-        const { rows : categories} = await connection.query('SELECT * FROM categories')
-        res.send(categories)        
+    const { rows : categories} = await connection.query('SELECT * FROM categories')
+        res.send(categories) 
+    
+  }
+  catch (error){
+
+    res.sendStatus(error)
+
+  }   
       
 } 
 
