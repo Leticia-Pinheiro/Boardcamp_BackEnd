@@ -17,6 +17,6 @@ app.use(gamesRoutes)
 app.use(customersRoutes)
 app.use(rentalsRoutes)
 
-const PORT = process.env.PORT || 4001;
-app.listen(PORT, () => console.log('Servidor conectado'));
+const PORT = process.env.PORT || 4001
+app.listen(PORT, () => console.log('Servidor conectado'))
 
