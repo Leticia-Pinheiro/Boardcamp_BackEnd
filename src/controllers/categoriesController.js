@@ -1,33 +1,26 @@
 import joi from 'joi'
 import connection from "../database/postgres.js"
 
-export async function getCategories(req, res){
-    try{     
+export async function getCategories(req, res){     
 
         const { rows : categories} = await connection.query('SELECT * FROM categories')
-        res.send(categories)
-        
-      }
-      catch (error){
-
-        res.sendStatus(error)
-
-      }    
+        res.send(categories)        
+      
 } 
 
 export async function postCategories(req, res){
-  const categorie = req.body
+  const category = req.body
 
-  const categorieSchema = joi.object({
+  const categorySchema = joi.object({
     name: joi.string().required()
   })
 
-  const error = categorieSchema.validate(newCategorie)
+  const {error} = categorySchema.validate(category)
 
   if (error){
     return res.sendStatus(400)
   }
 
-  // outra aula
-  // const newCategorie = await connection.query('INSERT INTO categories (name) VALUES ')
+  await connection.query(`INSERT INTO categories (name) VALUES ('${category.name}')`)
+  res.status(201).send('Categoria criada com sucesso')
 }
