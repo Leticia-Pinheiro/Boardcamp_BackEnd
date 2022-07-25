@@ -4,7 +4,7 @@ import connection from "../database/postgres.js"
 export async function getGames(req, res){
     try{     
 
-        const { rows : games} = await connection.query('SELECT * FROM games')
+        const { rows : games} = await connection.query('SELECT games.*, categories.name as "categoryName" FROM games JOIN categories ON games."categoryId"=categories.id')
         res.send(games)
         
       }
