@@ -4,9 +4,58 @@ import connection from "../database/postgres.js"
 
 export async function getRentals(req, res){
     try{     
+        const { customerId, gameId } = req.query
 
-        const { rows : rentals} = await connection.query('SELECT * FROM rentals')
-        res.send(rentals)
+        let query = `SELECT rentals.*, customers.name AS "customerName",
+        games.name AS "gameName",
+        games."categoryId",
+        categories.name AS "categoryName" FROM rentals
+        JOIN customers
+        ON customers.id = rentals."customerId"
+        JOIN games
+        ON games.id = rentals."gameId"
+        JOIN categories
+        ON games."categoryId" = categories.id`
+
+          if (customerId && gameId) {
+            query += ` WHERE (rentals."customerId" = ${customerId} AND rentals."gameId" = ${gameId})`;
+          } else if (customerId) {
+            query += ` WHERE rentals."customerId" = ${customerId}`;
+          } else if (gameId) {
+            query += ` WHERE rentals."gameId" = ${gameId}`;
+          }
+
+        const { rows : rentals } = await connection.query(query)
+        const rentalsObject = rentals.map((rental) => (   
+          {
+            id: rental.id,
+            customerId: rental.customerId,
+            gameId: rental.gameId,
+            rentDate: rental.rentDate,
+            daysRented: rental.daysRented,
+            returnDate: rental.returnDate,
+            originalPrice: rental.originalPrice,
+            delayFee: rental.delayFee,
+            customer: {
+             id: rental.customerId,
+             name: rental.customerName
+            },
+            game: {
+              id: rental.gameId,
+              name: rental.gameName,
+              categoryId: rental.categoryId,
+              categoryName: rental.categoryName
+            }
+          })
+        );
+        res.send(rentalsObject);
+
+
+
+
+
+        // const { rows : rentals} = await connection.query('SELECT * FROM rentals')
+        // res.send(rentals)
         
       }
       catch (error){
