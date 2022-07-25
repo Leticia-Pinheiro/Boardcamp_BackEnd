@@ -93,7 +93,19 @@ export async function returnRentals(req, res){
 }
 
 
-
 export async function deleteRentals(req, res){
+  const {id} = req.params
 
+  const { rows : exist } = await connection.query('SELECT * FROM rentals WHERE id = $1', [id])
+    if(exist.length === 0){
+      return res.sendStatus(404)
+    }
+
+  const returnDate = exist[0].returnDate
+    if (!returnDate){
+      return res.sendStatus(400)
+    }
+
+  await connection.query('DELETE FROM rentals WHERE id = $1', [id])
+  res.sendStatus(200)
 }
