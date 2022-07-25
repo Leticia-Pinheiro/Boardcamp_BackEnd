@@ -20,14 +20,19 @@ export async function getRentals(req, res){
 export async function postRentals(req, res){
     const { customerId, gameId, daysRented } = req.body
     const date = Date.now()
-    const rentDate = dayjs(date).format('YYYY-MM-DD')
+    const rentDate = dayjs(date).format('YYYY-MM-DD')    
 
+      if(daysRented <= 0){
+        return res.sendStatus(400)
+      }
 
-    //VALIDAÇÃO -> ERROR_MESSAGE
+      const { rows : customerExist } = await connection.query('SELECT c.id FROM customers c WHERE c.id = $1', [customerId])
+      if (customerExist.length === 0){
+        return res.sendStatus(400);
+      }
 
-
-      const { rows : exist } = await connection.query('SELECT c.id, g.id FROM customers c, games g WHERE c.id = $1 AND g.id = $2', [customerId, gameId])
-      if (exist.length === 0){
+      const { rows : gameExist } = await connection.query('SELECT g.id FROM games g WHERE g.id = $1', [gameId])
+      if (gameExist.length === 0){
         return res.sendStatus(400);
       }
 
@@ -55,8 +60,38 @@ export async function postRentals(req, res){
 
 
 export async function returnRentals(req, res){
+  const { id } = req.params
+  const date = Date.now()
+  const returnDate = dayjs(date).format('YYYY-MM-DD')
 
+  const { rows : rental } = await connection.query('SELECT * FROM rentals r WHERE r.id = $1', [id])
+  
+  const rentalReturned = rental[0].returnDate
+  const daysRented = rental[0].daysRented
+  const originalPrice = rental[0].originalPrice
+  const rentDate = rental[0].rentDate
+  const pricePerDay = originalPrice / daysRented
+  const delayDays = dayjs(date).diff(rentDate, 'days')
+  let delayFee = 0
+
+    if(rental.length === 0){
+      return res.sendStatus(404)
+    }
+
+    if(rentalReturned){
+      return res.sendStatus(400)
+    }  
+
+    if (delayDays > daysRented) {
+      delayFee = (delayDays - daysRented) * pricePerDay;
+    };
+
+  await connection.query(`UPDATE rentals SET "returnDate" = $1, "delayFee" = $2 WHERE id = $3`,
+    [returnDate, delayFee, id])    
+
+  res.sendStatus(200);
 }
+
 
 
 export async function deleteRentals(req, res){
