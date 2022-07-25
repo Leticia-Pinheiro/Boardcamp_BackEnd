@@ -49,13 +49,6 @@ export async function getRentals(req, res){
           })
         );
         res.send(rentalsObject);
-
-
-
-
-
-        // const { rows : rentals} = await connection.query('SELECT * FROM rentals')
-        // res.send(rentals)
         
       }
       catch (error){
