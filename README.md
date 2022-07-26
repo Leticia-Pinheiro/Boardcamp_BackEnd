@@ -10,6 +10,8 @@ Boardcamp é um sistema de gestão de uma locadora de jogos de tabuleiro;
 
 Trata-se de uma aplicação web onde é possível cadastrar jogos, separá-los por categoria, cadastrar clientes e gerenciar aluguéis.
 
+Repositório FrontEnd: https://github.com/Leticia-Pinheiro/Boardcamp_FrontEnd_Driven
+
 ###  Estado
 ![ status concluído ](https://user-images.githubusercontent.com/97575616/152926720-d042178b-24c0-4d6b-94fb-0ccbd3c082cc.svg)
 
