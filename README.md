@@ -15,13 +15,13 @@ Trata-se de uma aplicação web onde é possível cadastrar jogos, separá-los p
 
 ##  Recursos
 
-- [x] `Categorias` - OBTENHA todas as categorias de jogos e insira uma nova categoria de jogos.
+- [x] `Categorias` - Consulta as categorias cadastradas e adiciona categorias novas.
 
-- [x] `Games` - PEGUE todos os jogos cadastrados na loja, insira um novo jogo.
+- [x] `Games` - Consulta todos os jogos disponíveis na locadora e seu estoque e insere novos jogos.
 
-- [x] `Clientes` - GET todos os clientes, GET um cliente pelo seu ID, insira um novo cliente e atualize os dados de um cliente.
+- [x] `Clientes` - Consulta os dados dos clientes, adiciona novos e atualiza os cadastros já existentes.
 
-- [x] `Aluguéis` - OBTENHA todos os aluguéis de jogos, insira um aluguel, conclua um aluguel e exclua um aluguel não concluído.
+- [x] `Aluguéis` - Relaciona os clientes e os jogos alugados, controlando os valores e datas de validade. Possível Adicionar, Atualizar e Deletar os registros.
 
 ##  Tecnologias
 ![ usa-node js ](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)
